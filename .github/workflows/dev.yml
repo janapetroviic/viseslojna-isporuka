@@ -1,0 +1,31 @@
+name: Dev Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzimanje koda
+        uses: actions/checkout@v4
+
+      - name: Podesavanje Node.js okruzenja
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Instalacija zavisnosti
+        run: npm install
+
+      - name: Pokretanje Unit testova
+        run: npm run test:unit
+
+      - name: Ispis generisanog Docker taga
+        run: |
+          echo "GENERISANI TAG JE: dev-${{ github.sha }}"
+
+      - name: Kreiranje Docker slike za Dev
+        run: docker build -t aplikacija:dev-${{ github.sha }} .
