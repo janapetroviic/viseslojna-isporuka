@@ -26,5 +26,9 @@ jobs:
       - name: Pokretanje Integracionih testova
         run: npm run test:integration
 
+      - name: Ispis generisanog taga
+        run: |
+          echo "GENERISANI TAG JE: test-v1.0.${{ github.run_number }}"
+
       - name: Kreiranje Docker slike za Test
         run: docker build -t aplikacija:test-v1.0.${{ github.run_number }} .

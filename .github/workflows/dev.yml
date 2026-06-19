@@ -23,5 +23,9 @@ jobs:
       - name: Pokretanje Unit testova
         run: npm run test:unit
 
+      - name: Ispis generisanog Docker taga
+        run: |
+          echo "GENERISANI TAG JE: dev-${{ github.sha }}"
+
       - name: Kreiranje Docker slike za Dev
         run: docker build -t aplikacija:dev-${{ github.sha }} .
