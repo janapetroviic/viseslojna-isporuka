@@ -1,0 +1,31 @@
+name: Test Pipeline
+
+on:
+  push:
+    branches:
+      - test
+  pull_request:
+    branches:
+      - test
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzimanje koda
+        uses: actions/checkout@v4
+
+      - name: Podesavanje Node.js okruzenja
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Instalacija zavisnosti
+        run: npm install
+
+      - name: Pokretanje Integracionih testova
+        run: npm run test:integration
+
+      - name: Kreiranje Docker slike za Test
+        run: docker build -t aplikacija:test-v1.0.${{ github.run_number }} .
